@@ -54,5 +54,51 @@ RSpec.describe Cell do
         expect(cruiser.health).to eq(2)
     end
 
+    it "can render the cell before fired upon" do
+        cell_1 = Cell.new("B3")
+        cell_2 = Cell.new("A1")
+
+        cruiser = Ship.new("Cruiser", 3)
+        cell_2.place_ship(cruiser)
+
+        expect(cell_1.render).to eq(".")
+        expect(cell_2.render).to eq(".")
+        #expect(cell_2.render(true)).to eq("S")
+    end
+
+    it "can render the cell after fired upon" do
+        cell_1 = Cell.new("B3")
+        cell_2 = Cell.new("A1")
+
+        cruiser = Ship.new("Cruiser", 3)
+        cell_2.place_ship(cruiser)
+
+        cell_1.fire_upon
+        cell_2.fire_upon
+
+        expect(cell_1.render).to eq("M")
+        expect(cell_2.render).to eq("H")
+    end
+
+    it "can render the cell after ship is sunk" do
+        cell_1 = Cell.new("B3")
+        cell_2 = Cell.new("A1")
+
+        cruiser = Ship.new("Cruiser", 3)
+        cell_2.place_ship(cruiser)
+
+        cell_1.fire_upon
+        cell_2.fire_upon
+
+        cruiser.hit
+        cruiser.hit
+
+        expect(cruiser.sunk?).to eq(true)
+
+        expect(cell_1.render).to eq("M")
+        expect(cell_2.render).to eq("X")
+    end
+        
+
 
 end

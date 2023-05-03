@@ -33,8 +33,24 @@ class Cell
 
     def fire_upon
         @attacked = true
-        if ship.empty? == false
+        if empty? == false
             ship[0].hit
+        end
+    end
+
+    def render
+        if fired_upon? == true
+            if empty? == false
+                if ship[0].sunk? == false
+                    p "H"
+                else
+                    p "X"
+                end
+            else
+                p "M"
+            end
+        else
+            p "."
         end
     end
 
