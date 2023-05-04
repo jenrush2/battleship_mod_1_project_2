@@ -63,7 +63,7 @@ RSpec.describe Cell do
 
         expect(cell_1.render).to eq(".")
         expect(cell_2.render).to eq(".")
-        #expect(cell_2.render(true)).to eq("S")
+        expect(cell_2.render(true)).to eq("S")
     end
 
     it "can render the cell after fired upon" do

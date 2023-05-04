@@ -38,7 +38,7 @@ class Cell
         end
     end
 
-    def render
+    def render(*show_hidden_ship)
         if fired_upon? == true
             if empty? == false
                 if ship[0].sunk? == false
@@ -50,7 +50,11 @@ class Cell
                 p "M"
             end
         else
-            p "."
+            if show_hidden_ship == [true] and empty? == false
+                p "S"
+            else
+                p "."
+            end
         end
     end
 
