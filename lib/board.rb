@@ -16,4 +16,12 @@ class Board
                  "D3" => Cell.new("D3"), "D4" => Cell.new("D4")}
     end
 
+    def valid_coordinate?(test_coordinate)
+        if cells.key?(test_coordinate) == true
+            true
+        else
+            false
+        end
+    end
+
 end
