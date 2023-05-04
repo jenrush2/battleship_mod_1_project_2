@@ -1,5 +1,5 @@
 require 'pry'
-require './ship'
+require './lib/ship'
 
 class Cell
     attr_reader :coordinate, :ship, :attacked
