@@ -24,4 +24,14 @@ class Board
         end
     end
 
+    def valid_placement?(ship_name, array_of_coordinates)
+        if ship_name.length != array_of_coordinates.length
+            false
+        elsif array_of_coordinates.each {|coord| cells.key?(coord)} == false
+            false
+        else
+            true
+        end
+    end
+
 end
