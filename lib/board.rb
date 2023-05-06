@@ -62,6 +62,7 @@ class Board
             split_letter_array
         end
 
+        #create boolean to check if letters are consec
         check_if_split_letter_is_consec = true
         if split_letter_array != (split_letter_array.min..split_letter_array.max).to_a
             #if all letters are the same let it pass
@@ -75,16 +76,27 @@ class Board
         end
 
 
-
+        #test rules from above
+        #number of coordinates should be the same as length of ship
         if ship_name.length != array_of_coordinates.length
             false
+        #coordinates are on the board
         elsif check_for_valid_coord_boolean == false
             false
+        #coordinates should be increasing consecutive
         elsif array_of_coordinates.sort != array_of_coordinates
             false
+        #numbers must be consecutive if not all the same
         elsif check_if_split_number_is_consec == false
             false
+        #letters should be consecutive if not all the same
         elsif check_if_split_letter_is_consec == false
+            false
+        #coordinates can't be diagonal
+        elsif split_letter_array == (split_letter_array.min..split_letter_array.max).to_a and split_number_array == (split_number_array.min..split_number_array.max).to_a
+            false
+        #coordinates can't repeat
+        elsif array_of_coordinates.uniq.size != array_of_coordinates.size
             false
         else
             true
