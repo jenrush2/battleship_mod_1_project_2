@@ -75,6 +75,7 @@ class Board
             check_if_split_letter_is_consec
         end
 
+        
 
         #test rules from above
         #number of coordinates should be the same as length of ship
@@ -98,8 +99,23 @@ class Board
         #coordinates can't repeat
         elsif array_of_coordinates.uniq.size != array_of_coordinates.size
             false
+        #check to see if any of the cells already have a ship
         else
-            true
+            array_of_boolean_results = []
+            array_of_coordinates.each do |coord|
+                if cells[coord].ship != []
+                    array_of_boolean_results << false
+                else 
+                    array_of_boolean_results << true
+                end
+                array_of_boolean_results
+            end 
+            if array_of_boolean_results.include?(false) == true
+                result = false
+            else
+                result = true
+            end 
+            result
         end
     end
 
