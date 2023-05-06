@@ -103,4 +103,14 @@ class Board
         end
     end
 
+    def place(ship_name, coordinates_to_place)
+        if valid_placement?(ship_name, coordinates_to_place) == false
+            p "Those were not valid placements for your ship. Try again."
+        else
+            coordinates_to_place.each do |coord|
+                cells[coord].place_ship(ship_name)
+            end
+        end
+    end
+
 end

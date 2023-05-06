@@ -54,5 +54,21 @@ RSpec.describe Board do
 
     end
 
+    it "can place ships" do
+        board = Board.new
+        cruiser = Ship.new("Cruiser", 3)
+        submarine = Ship.new("Submarine", 2)
+
+        board.place(cruiser, ["A1", "A2", "A3"])
+        board.place(submarine, ["B3", "C3"])
+
+        expect(board.cells["A1"].ship).to eq([cruiser])
+        expect(board.cells["A2"].ship).to eq([cruiser])
+        expect(board.cells["A3"].ship).to eq([cruiser])
+
+        expect(board.cells["B3"].ship).to eq([submarine])
+        expect(board.cells["C3"].ship).to eq([submarine])
+    end
+
 
 end
