@@ -92,6 +92,27 @@ RSpec.describe Board do
         #check printout to see if board is correct
     end
 
+    it "can render a board after shots fired" do
+        board = Board.new
+        cruiser = Ship.new("Cruiser", 3)
+        submarine = Ship.new("Submarine", 2)
+
+        board.place(cruiser, ["A1", "A2", "A3"])
+        board.place(submarine, ["B2", "C2"])
+
+        board.cells["A1"].fire_upon
+        board.cells["D1"].fire_upon
+        board.cells["B2"].fire_upon
+        board.cells["C2"].fire_upon
+
+
+
+
+        expect(board.render).to eq(nil)
+        expect(board.render(true)).to eq(nil)
+        #check printout to see if board is correct
+    end
+
         
 
 
