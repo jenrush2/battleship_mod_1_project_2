@@ -70,5 +70,29 @@ RSpec.describe Board do
         expect(board.cells["C3"].ship).to eq([submarine])
     end
 
+    it "can prevent overlapping placement of ships" do
+        board = Board.new
+        cruiser = Ship.new("Cruiser", 3)
+        submarine = Ship.new("Submarine", 2)
+
+        board.place(cruiser, ["A1", "A2", "A3"])
+        expect(board.place(submarine, ["A1", "B1"])).to eq("Those were not valid placements for your ship. Try again.")
+    end
+
+    it "can render a board" do
+        board = Board.new
+        cruiser = Ship.new("Cruiser", 3)
+        submarine = Ship.new("Submarine", 2)
+
+        board.place(cruiser, ["A1", "A2", "A3"])
+        board.place(submarine, ["B2", "C2"])
+
+        expect(board.render).to eq(nil)
+        expect(board.render(true)).to eq(nil)
+        #check printout to see if board is correct
+    end
+
+        
+
 
 end
