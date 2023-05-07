@@ -19,5 +19,12 @@ RSpec.describe Game do
         expect(new_game.player_board).to be_an_instance_of(Board)
     end
 
+    it "enters the game menu using start method" do
+        new_game = Game.new
+
+        expect(new_game.start).to eq(nil)
+        #check printout for results
+
+
 
 end
