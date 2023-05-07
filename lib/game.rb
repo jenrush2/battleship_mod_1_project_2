@@ -27,7 +27,6 @@ class Game
                 computer_cruiser_array
             end
             comp_board.place(computer_cruiser, computer_cruiser_array)
-            comp_board.render(true)
             array_of_board_coordinates_minus_cruiser = array_of_board_coordinates - computer_cruiser_array
             computer_submarine_array = array_of_board_coordinates_minus_cruiser.sample(2)
             while comp_board.valid_placement?(computer_submarine, computer_submarine_array) == false

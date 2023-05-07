@@ -42,18 +42,18 @@ class Cell
         if fired_upon? == true
             if empty? == false
                 if ship[0].sunk? == false
-                    p "H"
+                    "H"
                 else
-                    p "X"
+                    "X"
                 end
             else
-                p "M"
+                "M"
             end
         else
             if show_hidden_ship == [true] and empty? == false
-                p "S"
+                "S"
             else
-                p "."
+                "."
             end
         end
     end
