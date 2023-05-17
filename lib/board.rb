@@ -36,7 +36,8 @@ class Board
             check_for_valid_coord_boolean
         end
         
-        p "for #{array_of_coordinates} the value of check for valid coord is #{check_for_valid_coord_boolean}"
+        #Use code below when debugging
+        #p "for #{array_of_coordinates} the value of check for valid coord is #{check_for_valid_coord_boolean}"
 
         #Split to just numbers so we can test consec
         split_number_array = []
@@ -142,8 +143,8 @@ class Board
 
     def render(*show_hidden_ship)
         if show_hidden_ship != [true]
-            puts "Current board: \n"+
-                "_____________________\n"+
+            #puts "Current board: \n"+
+                puts "_____________________\n"+
                 "|   | 1 | 2 | 3 | 4 |\n"+
                 "_____________________\n"+
                 "| A | #{cells["A1"].render} | #{cells["A2"].render} | #{cells["A3"].render} | #{cells["A4"].render} |\n"+
@@ -155,8 +156,8 @@ class Board
                 "| D | #{cells["D1"].render} | #{cells["D2"].render} | #{cells["D3"].render} | #{cells["D4"].render} |\n"+
                 "_____________________\n"
         else
-            puts "Board with ships (cheat): \n"+
-            "_____________________\n"+
+            #puts "Board with ships (cheat): \n"+
+            puts "_____________________\n"+
             "|   | 1 | 2 | 3 | 4 |\n"+
             "_____________________\n"+
             "| A | #{cells["A1"].render(true)} | #{cells["A2"].render(true)} | #{cells["A3"].render(true)} | #{cells["A4"].render(true)} |\n"+

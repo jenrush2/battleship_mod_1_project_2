@@ -42,7 +42,7 @@ class Game
             "You need to place your two ships.\n"+
             "The Cruiser is three units long and the Submarine is two units long."
             player_board.render
-            puts "Enter the placement for your Cruiser. Separate each cell placement with a comma."
+            puts "Enter the placement for your Cruiser. Name cells using an uppercase letter and number, such as A3. Separate each coordinate with a comma."
             cruiser_input = gets.chomp
             cruiser_input = cruiser_input.to_s
             player_cruiser_array = cruiser_input.split(/\s*,\s*/)
@@ -56,7 +56,7 @@ class Game
             player_board.place(player_1_cruiser, player_cruiser_array)
             player_board.render(true)
 
-            puts "Enter the placement for your two-unit Submarine. Separate each cell placement with a comma."
+            puts "Enter the placement for your two-unit Submarine. Name cells using an uppercase letter and number, such as A3. Separate each coordinate with a comma."
             submarine_input = gets.chomp
             submarine_input = submarine_input.to_s
             player_submarine_array = submarine_input.split(/\s*,\s*/)
@@ -69,6 +69,9 @@ class Game
             end
             player_board.place(player_1_submarine, player_submarine_array)
             player_board.render(true)
+
+            #Start a loop of turns until there's a winner
+            
 
 
 
