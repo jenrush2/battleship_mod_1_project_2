@@ -4,11 +4,13 @@ require './lib/cell'
 require './lib/board'
 
 class Turn
-    attr_reader :computer_board, :player_board
+    attr_reader :computer_board, :player_board, :player_turn_result, :computer_turn_result
 
     def initialize(computer_board, player_board)
         @computer_board = computer_board
         @player_board = player_board
+        @player_turn_result = ""
+        @computer_turn_result = ""
     end
 
     def display
@@ -19,32 +21,33 @@ class Turn
     end
 
     def player_shot(shot_coordinate)
-        coord = computer_board.cells[shot_coordinate]
 
-        if computer_board.valid_coordinate?(coord.coordinate) == false
+        if computer_board.valid_coordinate?(shot_coordinate) == false
             p "That is not a valid shot. Please try again."
+            @player_turn_result = "That is not a valid shot. Please try again."
         else
+            coord = computer_board.cells[shot_coordinate]
             if coord.fired_upon? == true
-                turn_result = "You've fired on #{coord.coordinate} before. It was already a #{coord.render(true)}. Way to waste a turn."
+                @player_turn_result = "You've fired on #{coord.coordinate} before. It was already a #{coord.render(true)}. Way to waste a turn."
             else 
                 coord.fire_upon
                 if coord.render(true) == "H"
-                    turn_result = "Your shot on #{coord.coordinate} was a hit!"
+                    @player_turn_result = "Your shot on #{coord.coordinate} was a hit!"
                 elsif coord.render(true) == "M"
-                    turn_result = "Your shot on #{coord.coordinate} was a miss!"
+                    @player_turn_result = "Your shot on #{coord.coordinate} was a miss!"
                 elsif coord.render(true) == "X"
-                    turn_result = "Your shot on #{coord.coordinate} was a hit! You sunk the #{coord.ship[0].name}!"
+                    @player_turn_result = "Your shot on #{coord.coordinate} was a hit! You sunk the #{coord.ship[0].name}!"
                 end
-            p turn_result
-            return turn_result
+            return @player_turn_result
             end
-            turn_result
+            @player_turn_result
         end
     end
 
     def computer_shot
         array_of_board_coordinates = player_board.cells.keys
         
+        #create an array of coordinates that have been hit
         array_of_hits = []
         array_of_board_coordinates.each do |cell|
             if player_board.cells[cell].render == "H"
@@ -54,9 +57,12 @@ class Turn
             array_of_hits
         end
 
+        #If there have been hits, create a list of smart shots
         if array_of_hits != [] 
             array_of_smart_guess_options = []
             array_of_smart_guess_options_on_board = []
+            
+            #There are four smart shots for each hit that's in the middle of the board
             array_of_hits.each do |cell|
                 letter_split_as_number = cell[0].ord
                 letter_above = letter_split_as_number + 1
@@ -73,52 +79,52 @@ class Turn
                 array_of_smart_guess_options << [smart_guess_1, smart_guess_2, smart_guess_3, smart_guess_4]
                 array_of_smart_guess_options = array_of_smart_guess_options.flatten
 
-
+                #If the hit was on the edge of the baord, then we can't use all four coordinates
+                #Only use smart shots if they're on the board AND have not already been fired on
                 array_of_smart_guess_options.each do |coord|
                     if player_board.cells.key?(coord) == true and player_board.cells[coord].fired_upon? == false
                         array_of_smart_guess_options_on_board << coord
                         array_of_smart_guess_options_on_board
                     end
-                    p "line 82 #{array_of_smart_guess_options_on_board}"
+    
                     array_of_smart_guess_options_on_board
                 end
-                p "line 85 #{array_of_smart_guess_options_on_board}"
 
                 array_of_smart_guess_options_on_board
             end
-            p "line 89 #{array_of_smart_guess_options_on_board}"
 
+            #Randomly choose from arary of smart shots
             computer_smart_guess = array_of_smart_guess_options_on_board.sample(1)
-            p "line 92 #{computer_smart_guess}"
+            
+            #Turn the string representing the coordinate into a Cell object
             computer_smart_guess = player_board.cells[computer_smart_guess[0]]
-            p "line 94 #{computer_smart_guess}"
 
             computer_smart_guess
+        
+        #If there have been no hits, just pick a random coordinate from the board
         else
             computer_smart_guess = array_of_board_coordinates.sample(1)
-            p "line 99 #{computer_smart_guess}"
             computer_smart_guess = player_board.cells[computer_smart_guess[0]]
-            p "line 101 #{computer_smart_guess}"
             computer_smart_guess
         end
 
+        #Fire on the smart guess and generate the result
         computer_smart_guess.fire_upon
         if computer_smart_guess.render(true) == "H"
-            turn_result = "My shot on #{computer_smart_guess.coordinate} was a hit!"
+            @computer_turn_result = "My shot on #{computer_smart_guess.coordinate} was a hit!"
         elsif computer_smart_guess.render(true) == "M"
-            turn_result = "My shot on #{computer_smart_guess.coordinate} was a miss!"
+            @computer_turn_result = "My shot on #{computer_smart_guess.coordinate} was a miss!"
         elsif computer_smart_guess.render(true) == "X"
-            turn_result = "My shot on #{computer_smart_guess.coordinate} was a hit! I sunk your #{computer_smart_guess.ship[0].name}!"
+            @computer_turn_result = "My shot on #{computer_smart_guess.coordinate} was a hit! I sunk your #{computer_smart_guess.ship[0].name}!"
         end
-        
-        p turn_result
-        
+
+        @computer_turn_result
+    end
 
 
-
-        turn_result
-
-
+    def display_results
+        p @computer_turn_result
+        p @player_turn_result
     end
             
 
