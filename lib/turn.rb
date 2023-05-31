@@ -4,14 +4,13 @@ require './lib/cell'
 require './lib/board'
 
 class Turn
-    attr_reader :computer_board, :player_board, :player_turn_result, :computer_turn_result, :game_over
+    attr_reader :computer_board, :player_board, :player_turn_result, :computer_turn_result
 
     def initialize(computer_board, player_board)
         @computer_board = computer_board
         @player_board = player_board
         @player_turn_result = ""
         @computer_turn_result = ""
-        @game_over = false
     end
 
     def display
@@ -21,35 +20,40 @@ class Turn
         player_board.render(true)
     end
 
-    def player_shot(shot_coordinate)
-
-        if computer_board.valid_coordinate?(shot_coordinate) == false
+    def player_shot
+        p "It is your turn to take a shot. Type one coordinate to fire on."
+        shot_coordinate = gets.chomp
+        while computer_board.valid_coordinate?(shot_coordinate) == false
             p "That is not a valid shot. Please try again."
-            @player_turn_result = "That is not a valid shot. Please try again."
-        else
-            coord = computer_board.cells[shot_coordinate]
-            if coord.fired_upon? == true
-                if coord.render(true) == "H"
-                    previous_result = "hit."
-                elsif coord.render(true) == "M"
-                    previous_result = "miss."
-                elsif coord.render(true) == "X"
-                    previous_result = "hit. You already sunk the #{coord.ship[0].name}."
-                end
-                @player_turn_result = "You've fired on #{coord.coordinate} before. It was already a #{previous_result} Way to waste a turn."
-            else 
-                coord.fire_upon
-                if coord.render(true) == "H"
-                    @player_turn_result = "Your shot on #{coord.coordinate} was a hit!"
-                elsif coord.render(true) == "M"
-                    @player_turn_result = "Your shot on #{coord.coordinate} was a miss!"
-                elsif coord.render(true) == "X"
-                    @player_turn_result = "Your shot on #{coord.coordinate} was a hit! You sunk the #{coord.ship[0].name}!"
-                end
-            return @player_turn_result
-            end
-            @player_turn_result
+            shot_coordinate = gets.chomp
         end
+            
+        
+        coord = computer_board.cells[shot_coordinate]
+        if coord.fired_upon? == true
+            if coord.render(true) == "H"
+                previous_result = "hit."
+            elsif coord.render(true) == "M"
+                previous_result = "miss."
+            elsif coord.render(true) == "X"
+                previous_result = "hit. You already sunk the #{coord.ship[0].name}."
+            end
+            @player_turn_result = "You've fired on #{coord.coordinate} before. It was already a #{previous_result} Way to waste a turn."
+        else 
+            coord.fire_upon
+            if coord.render(true) == "H"
+                @player_turn_result = "Your shot on #{coord.coordinate} was a hit!"
+            elsif coord.render(true) == "M"
+                @player_turn_result = "Your shot on #{coord.coordinate} was a miss!"
+            elsif coord.render(true) == "X"
+                @player_turn_result = "Your shot on #{coord.coordinate} was a hit! You sunk the #{coord.ship[0].name}!"
+            end
+        return @player_turn_result
+
+        end
+
+        @player_turn_result
+        
     end
 
     def computer_shot
@@ -112,6 +116,11 @@ class Turn
         #If there have been no hits, just pick a random coordinate from the board
         else
             computer_smart_guess = array_of_board_coordinates.sample(1)
+            
+            #check to make sure smart guess has not already been used
+            while player_board.cells[computer_smart_guess[0]].fired_upon? == true
+                computer_smart_guess = array_of_board_coordinates.sample(1)
+            end
             computer_smart_guess = player_board.cells[computer_smart_guess[0]]
             computer_smart_guess
         end
@@ -135,66 +144,6 @@ class Turn
         p @player_turn_result
     end
 
-    def game_over?
-        array_of_ships_player = []
-        player_board.cells.keys.each do |cell|
-            if player_board.cells[cell].render(true) == "S"
-                array_of_ships_player << cell
-                array_of_ships_player
-            end
-            array_of_ships_player
-        end
-
-        array_of_ships_computer = []
-        computer_board.cells.keys.each do |cell|
-            if computer_board.cells[cell].render(true) == "S"
-                array_of_ships_computer << cell
-                array_of_ships_computer
-            end
-            array_of_ships_computer
-        end
-
-        if array_of_ships_player == [] or array_of_ships_computer == []
-            @game_over = true
-            @game_over
-        else
-            @game_over = false
-            @game_over
-        end
-    end
-
-    def winner
-        if @game_over == true
-            array_of_ships_player = []
-            player_board.cells.keys.each do |cell|
-                if player_board.cells[cell].render(true) == "S"
-                    array_of_ships_player << cell
-                    array_of_ships_player
-                end
-                array_of_ships_player
-            end
-
-            array_of_ships_computer = []
-            computer_board.cells.keys.each do |cell|
-                if computer_board.cells[cell].render(true) == "S"
-                    array_of_ships_computer << cell
-                    array_of_ships_computer
-                end
-                array_of_ships_computer
-            end
-
-            if array_of_ships_player == []
-                winner = "Game over! I win!"
-                p winner
-                return winner
-            elsif array_of_ships_computer == []
-                winner = "Game over! You win!"
-                p winner
-                return winner
-            end
-
-        end
-    end
             
 
 

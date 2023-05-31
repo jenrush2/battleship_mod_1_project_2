@@ -4,7 +4,7 @@ require './lib/cell'
 require './lib/board'
 
 class Game
-    attr_reader :comp_board, :player_board, :computer_cruiser, :computer_submarine, :player_1_cruiser, :player_1_submarine
+    attr_reader :comp_board, :player_board, :computer_cruiser, :computer_submarine, :player_1_cruiser, :player_1_submarine, :game_over
 
     def initialize
         @comp_board = Board.new
@@ -13,6 +13,7 @@ class Game
         @computer_submarine = Ship.new("Submarine", 2)
         @player_1_cruiser = Ship.new("Cruiser", 3)
         @player_1_submarine = Ship.new("Submarine", 2)
+        @game_over = false
     end
 
     def start
@@ -70,15 +71,78 @@ class Game
             player_board.place(player_1_submarine, player_submarine_array)
             player_board.render(true)
 
-            #Start a loop of turns until there's a winner
-            
-
-
-
         elsif usrin == "q"
         else 
             start
-        end    
+        end
+
+    end
+
+
+    def game_over?
+        array_of_ships_player = []
+        player_board.cells.keys.each do |cell|
+            if player_board.cells[cell].render(true) == "S"
+                array_of_ships_player << cell
+                array_of_ships_player
+            end
+            array_of_ships_player
+        end
+
+        array_of_ships_computer = []
+        comp_board.cells.keys.each do |cell|
+            if comp_board.cells[cell].render(true) == "S"
+                array_of_ships_computer << cell
+                array_of_ships_computer
+            end
+            array_of_ships_computer
+        end
+
+        if array_of_ships_player == [] or array_of_ships_computer == []
+            @game_over = true
+            @game_over
+        else
+            @game_over = false
+            @game_over
+        end
+    end
+
+    def winner
+        if @game_over == true
+            array_of_ships_player = []
+            player_board.cells.keys.each do |cell|
+                if player_board.cells[cell].render(true) == "S"
+                    array_of_ships_player << cell
+                    array_of_ships_player
+                end
+                array_of_ships_player
+            end
+
+            array_of_ships_computer = []
+            comp_board.cells.keys.each do |cell|
+                if comp_board.cells[cell].render(true) == "S"
+                    array_of_ships_computer << cell
+                    array_of_ships_computer
+                end
+                array_of_ships_computer
+            end
+
+            if array_of_ships_player == [] and array_of_ships_computer == []
+                winner = "Game over! We destroyed each other! No one wins!"
+                p winner
+                start
+            elsif array_of_ships_player == []
+                winner = "Game over! I win!"
+                p winner
+                start
+            elsif array_of_ships_computer == []
+                winner = "Game over! You win!"
+                p winner
+                start
+            end
+
+        end
+
     end
 
 
