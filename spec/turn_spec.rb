@@ -246,8 +246,176 @@ RSpec.describe Turn do
 
 
     xit "lets you know if the coordinates have already been fired upon" do
+        comp_board = Board.new
+        comp_cruiser = Ship.new("Cruiser", 3)
+        comp_submarine = Ship.new("Submarine", 2)
+        comp_cruiser_array = ["A1", "B1", "C1"]
+        comp_submarine_array = ["D3", "D4"]
+
+
+        comp_board.place(comp_cruiser, comp_cruiser_array)
+        comp_board.place(comp_submarine, comp_submarine_array)
+
+        test_player_board = Board.new
+        test_player_cruiser = Ship.new("Cruiser", 3)
+        test_player_submarine = Ship.new("Submarine", 2)
+        test_player_cruiser_array = ["C2", "C3", "C4"]
+        test_player_submarine_array = ["A3", "B3"]
+
+        test_player_board.place(test_player_cruiser, test_player_cruiser_array)
+        test_player_board.place(test_player_submarine, test_player_submarine_array)
+
+        turn = Turn.new(comp_board, test_player_board)
+
+        turn.player_shot("A1")
+        turn.player_shot("A1")
+        expect(turn.display_results).to eq("You've fired on A1 before. It was already a hit. Way to waste a turn.")
+
     end
-    xit "checks to see if the game is over" do
+
+    it "checks to see if the game is over false" do
+        comp_board = Board.new
+        comp_cruiser = Ship.new("Cruiser", 3)
+        comp_submarine = Ship.new("Submarine", 2)
+        comp_cruiser_array = ["A1", "B1", "C1"]
+        comp_submarine_array = ["D3", "D4"]
+
+
+        comp_board.place(comp_cruiser, comp_cruiser_array)
+        comp_board.place(comp_submarine, comp_submarine_array)
+
+        test_player_board = Board.new
+        test_player_cruiser = Ship.new("Cruiser", 3)
+        test_player_submarine = Ship.new("Submarine", 2)
+        test_player_cruiser_array = ["C2", "C3", "C4"]
+        test_player_submarine_array = ["A3", "B3"]
+
+        test_player_board.place(test_player_cruiser, test_player_cruiser_array)
+        test_player_board.place(test_player_submarine, test_player_submarine_array)
+
+        turn = Turn.new(comp_board, test_player_board)
+
+        turn.player_shot("A1")
+        turn.computer_shot
+        turn.player_shot("B1")
+        turn.computer_shot
+        turn.player_shot("C1")
+        turn.computer_shot
+
+        expect(turn.game_over?).to eq(false)
+
+
+    end
+
+    it "checks to see if the game is over true" do
+        comp_board = Board.new
+        comp_cruiser = Ship.new("Cruiser", 3)
+        comp_submarine = Ship.new("Submarine", 2)
+        comp_cruiser_array = ["A1", "B1", "C1"]
+        comp_submarine_array = ["D3", "D4"]
+
+
+        comp_board.place(comp_cruiser, comp_cruiser_array)
+        comp_board.place(comp_submarine, comp_submarine_array)
+
+        test_player_board = Board.new
+        test_player_cruiser = Ship.new("Cruiser", 3)
+        test_player_submarine = Ship.new("Submarine", 2)
+        test_player_cruiser_array = ["C2", "C3", "C4"]
+        test_player_submarine_array = ["A3", "B3"]
+
+        test_player_board.place(test_player_cruiser, test_player_cruiser_array)
+        test_player_board.place(test_player_submarine, test_player_submarine_array)
+
+        turn = Turn.new(comp_board, test_player_board)
+
+        turn.player_shot("A1")
+        turn.computer_shot
+        turn.player_shot("B1")
+        turn.computer_shot
+        turn.player_shot("C1")
+        turn.display_results
+        turn.computer_shot
+        turn.player_shot("D3")
+        turn.computer_shot
+        turn.player_shot("D4")
+        turn.display_results
+
+        expect(turn.game_over?).to eq(true)
+    end
+
+    it "checks to see if the game is over false" do
+        comp_board = Board.new
+        comp_cruiser = Ship.new("Cruiser", 3)
+        comp_submarine = Ship.new("Submarine", 2)
+        comp_cruiser_array = ["A1", "B1", "C1"]
+        comp_submarine_array = ["D3", "D4"]
+
+
+        comp_board.place(comp_cruiser, comp_cruiser_array)
+        comp_board.place(comp_submarine, comp_submarine_array)
+
+        test_player_board = Board.new
+        test_player_cruiser = Ship.new("Cruiser", 3)
+        test_player_submarine = Ship.new("Submarine", 2)
+        test_player_cruiser_array = ["C2", "C3", "C4"]
+        test_player_submarine_array = ["A3", "B3"]
+
+        test_player_board.place(test_player_cruiser, test_player_cruiser_array)
+        test_player_board.place(test_player_submarine, test_player_submarine_array)
+
+        turn = Turn.new(comp_board, test_player_board)
+
+        turn.player_shot("A1")
+        turn.computer_shot
+        turn.player_shot("B1")
+        turn.computer_shot
+        turn.player_shot("C1")
+        turn.computer_shot
+        turn.display_results
+       
+
+        expect(turn.game_over?).to eq(false)
+    end
+
+
+    it "checks for a winner if game is over" do
+        comp_board = Board.new
+        comp_cruiser = Ship.new("Cruiser", 3)
+        comp_submarine = Ship.new("Submarine", 2)
+        comp_cruiser_array = ["A1", "B1", "C1"]
+        comp_submarine_array = ["D3", "D4"]
+
+
+        comp_board.place(comp_cruiser, comp_cruiser_array)
+        comp_board.place(comp_submarine, comp_submarine_array)
+
+        test_player_board = Board.new
+        test_player_cruiser = Ship.new("Cruiser", 3)
+        test_player_submarine = Ship.new("Submarine", 2)
+        test_player_cruiser_array = ["C2", "C3", "C4"]
+        test_player_submarine_array = ["A3", "B3"]
+
+        test_player_board.place(test_player_cruiser, test_player_cruiser_array)
+        test_player_board.place(test_player_submarine, test_player_submarine_array)
+
+        turn = Turn.new(comp_board, test_player_board)
+
+        turn.player_shot("A1")
+        turn.computer_shot
+        turn.player_shot("B1")
+        turn.computer_shot
+        turn.player_shot("C1")
+        turn.display_results
+        turn.computer_shot
+        turn.player_shot("D3")
+        turn.computer_shot
+        turn.player_shot("D4")
+        turn.display_results
+
+        turn.game_over?
+        
+        expect(turn.winner).to eq("Game over! You win!")
     end
 
 

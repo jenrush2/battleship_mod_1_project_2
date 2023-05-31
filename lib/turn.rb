@@ -4,13 +4,14 @@ require './lib/cell'
 require './lib/board'
 
 class Turn
-    attr_reader :computer_board, :player_board, :player_turn_result, :computer_turn_result
+    attr_reader :computer_board, :player_board, :player_turn_result, :computer_turn_result, :game_over
 
     def initialize(computer_board, player_board)
         @computer_board = computer_board
         @player_board = player_board
         @player_turn_result = ""
         @computer_turn_result = ""
+        @game_over = false
     end
 
     def display
@@ -28,7 +29,14 @@ class Turn
         else
             coord = computer_board.cells[shot_coordinate]
             if coord.fired_upon? == true
-                @player_turn_result = "You've fired on #{coord.coordinate} before. It was already a #{coord.render(true)}. Way to waste a turn."
+                if coord.render(true) == "H"
+                    previous_result = "hit."
+                elsif coord.render(true) == "M"
+                    previous_result = "miss."
+                elsif coord.render(true) == "X"
+                    previous_result = "hit. You already sunk the #{coord.ship[0].name}."
+                end
+                @player_turn_result = "You've fired on #{coord.coordinate} before. It was already a #{previous_result} Way to waste a turn."
             else 
                 coord.fire_upon
                 if coord.render(true) == "H"
@@ -125,6 +133,67 @@ class Turn
     def display_results
         p @computer_turn_result
         p @player_turn_result
+    end
+
+    def game_over?
+        array_of_ships_player = []
+        player_board.cells.keys.each do |cell|
+            if player_board.cells[cell].render(true) == "S"
+                array_of_ships_player << cell
+                array_of_ships_player
+            end
+            array_of_ships_player
+        end
+
+        array_of_ships_computer = []
+        computer_board.cells.keys.each do |cell|
+            if computer_board.cells[cell].render(true) == "S"
+                array_of_ships_computer << cell
+                array_of_ships_computer
+            end
+            array_of_ships_computer
+        end
+
+        if array_of_ships_player == [] or array_of_ships_computer == []
+            @game_over = true
+            @game_over
+        else
+            @game_over = false
+            @game_over
+        end
+    end
+
+    def winner
+        if @game_over == true
+            array_of_ships_player = []
+            player_board.cells.keys.each do |cell|
+                if player_board.cells[cell].render(true) == "S"
+                    array_of_ships_player << cell
+                    array_of_ships_player
+                end
+                array_of_ships_player
+            end
+
+            array_of_ships_computer = []
+            computer_board.cells.keys.each do |cell|
+                if computer_board.cells[cell].render(true) == "S"
+                    array_of_ships_computer << cell
+                    array_of_ships_computer
+                end
+                array_of_ships_computer
+            end
+
+            if array_of_ships_player == []
+                winner = "Game over! I win!"
+                p winner
+                return winner
+            elsif array_of_ships_computer == []
+                winner = "Game over! You win!"
+                p winner
+                return winner
+            end
+
+        end
     end
             
 
