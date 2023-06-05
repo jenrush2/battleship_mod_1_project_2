@@ -36,7 +36,8 @@ class Game
                 computer_submarine_array
             end
             comp_board.place(computer_submarine, computer_submarine_array)
-            comp_board.render(true)
+            #Use line below to see computer ships during debugging
+            #comp_board.render(true)
 
             #Player input to choose valid placements for two ships
             puts "I have laid out my ships on a grid.\n"+
