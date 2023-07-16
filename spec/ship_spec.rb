@@ -28,13 +28,13 @@ RSpec.describe Ship do
 
   it "can test for sunk" do
     ship = Ship.new("Cruiser", 3)
-
+ 
     expect(ship.sunk?).to eq(false)
   end
 
   it "can take a hit and change health" do
     ship = Ship.new("Cruiser", 3)
-
+   
     ship.hit
 
     expect(ship.health).to eq(2)
